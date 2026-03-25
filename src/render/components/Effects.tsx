@@ -25,10 +25,10 @@ export default function Effects({
   return (
     <EffectComposer disableNormalPass multisampling={4}>
       <Bloom
-        luminanceThreshold={isDark ? 0.2 : 0.8}
-        luminanceSmoothing={0.9}
-        intensity={isDark ? 1.5 : 0.2}
-        mipmapBlur // Better looking, softer blur
+        luminanceThreshold={isDark ? 0.05 : 0.7}
+        luminanceSmoothing={0.85}
+        intensity={isDark ? 2.8 : 0.3}
+        mipmapBlur
       />
 
       {/* Subtle chromatic aberration (color splitting at the edges) for a CRT/hacker feel */}

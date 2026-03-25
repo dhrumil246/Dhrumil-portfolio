@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useCallback, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Grid, Sparkles } from "@react-three/drei";
+import { Sparkles } from "@react-three/drei";
 import { useTerminalStore } from "@/store/useTerminalStore";
 import { prefersReducedMotion } from "@/lib/deviceCheck";
 import SkillsScene from "@/render/scenes/SkillScenes";
@@ -73,7 +73,7 @@ export default function RenderCanvas() {
 
   return (
     <Canvas
-      camera={{ position: [0, 0, 5.5], fov: 35 }}
+      camera={{ position: [0, 0, 5.8], fov: 42 }}
       dpr={[1, 1.5]}
       gl={{
         antialias: true,
@@ -84,33 +84,27 @@ export default function RenderCanvas() {
     >
       <color attach="background" args={[bgColor]} />
 
-      {/* Minimal lighting — no expensive shadows */}
-      <ambientLight intensity={0.6} />
-      <pointLight position={[5, 5, 5]} intensity={0.8} />
+      {/* Key light + fill light for card depth */}
+      <ambientLight intensity={0.5} />
+      <pointLight position={[4, 5, 4]} intensity={1.2} />
+      <pointLight
+        position={[-4, -3, 2]}
+        intensity={0.4}
+        color={theme === "dark" ? "#38bdf8" : "#94a3b8"}
+      />
 
       {/* Post-Processing Effects */}
       <Effects theme={theme} reducedMotion={reducedMotion} />
 
-      {/* Cyber-Grid Floor */}
-      <Grid 
-        position={[0, -2.5, 0]}
-        infiniteGrid
-        fadeDistance={25}
-        sectionColor={theme === "dark" ? "#1e293b" : "#e2e8f0"}
-        cellColor={theme === "dark" ? "#0f172a" : "#cbd5e1"}
-        sectionSize={2}
-        cellSize={0.5}
-      />
-
       {/* Ambient Data Particles */}
       {!reducedMotion && (
-        <Sparkles 
-          count={150} 
-          scale={15} 
-          size={2} 
-          speed={0.4} 
-          opacity={0.3} 
-          color={theme === "dark" ? "#38bdf8" : "#94a3b8"} 
+        <Sparkles
+          count={120}
+          scale={12}
+          size={1.5}
+          speed={0.3}
+          opacity={0.25}
+          color={theme === "dark" ? "#a3e635" : "#94a3b8"}
         />
       )}
 
