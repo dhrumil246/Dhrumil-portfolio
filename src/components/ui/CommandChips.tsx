@@ -1,5 +1,8 @@
 "use client";
 
+import { startTransition } from "react";
+import { useTerminalStore } from "@/store/useTerminalStore";
+
 interface CommandChipsProps {
   onCommand: (cmd: string) => void;
   visible?: boolean;
@@ -15,6 +18,17 @@ const CHIPS = [
 ] as const;
 
 export default function CommandChips({ onCommand, visible = true }: CommandChipsProps) {
+  const renderEnabled = useTerminalStore((s) => s.renderEnabled);
+  const toggleRender = useTerminalStore((s) => s.toggleRender);
+  const deviceType = useTerminalStore((s) => s.deviceType);
+  const isMobile = deviceType === "mobile";
+
+  const handleRenderToggle = () => {
+    startTransition(() => {
+      toggleRender();
+    });
+  };
+
   return (
     <div
       style={{
@@ -60,6 +74,30 @@ export default function CommandChips({ onCommand, visible = true }: CommandChips
           {cmd}
         </button>
       ))}
+
+      {!isMobile && (
+        <button
+          onClick={handleRenderToggle}
+          style={{
+            background: renderEnabled ? "var(--accent)" : "var(--chip-bg)",
+            color: renderEnabled ? "var(--bg)" : "var(--accent)",
+            border: `1px solid ${renderEnabled ? "var(--accent)" : "var(--border)"}`,
+            borderRadius: 6,
+            padding: "5px 14px",
+            fontSize: 12,
+            fontFamily: "var(--font-mono), monospace",
+            cursor: "pointer",
+            opacity: visible ? 1 : 0,
+            transform: visible ? "translateY(0)" : "translateY(8px)",
+            transition: `opacity 0.3s ease ${CHIPS.length * 0.06}s, transform 0.3s ease ${CHIPS.length * 0.06}s, background 0.15s ease, border-color 0.15s ease, color 0.15s ease`,
+            userSelect: "none",
+          }}
+          aria-label={`${renderEnabled ? "Disable" : "Enable"} 3D render mode`}
+          title={`${renderEnabled ? "Disable" : "Enable"} 3D render mode`}
+        >
+          ✦ 3D
+        </button>
+      )}
     </div>
   );
 }

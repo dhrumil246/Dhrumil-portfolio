@@ -75,8 +75,8 @@ export default function TerminalWindow() {
         background: "var(--surface)",
         border: "1px solid var(--border)",
         boxShadow: "var(--shadow)",
-        maxHeight: "85vh",
-        minHeight: "500px",
+        maxHeight: "90vh",
+        minHeight: "min(500px, 75vh)",
       }}
     >
       {/* ─── Title Bar ─── */}

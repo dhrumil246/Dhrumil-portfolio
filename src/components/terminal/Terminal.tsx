@@ -390,7 +390,7 @@ export default function Terminal({ onBootComplete }: { onBootComplete?: () => vo
       {/* Scrollable output */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto py-2 min-h-[300px]"
+        className="flex-1 overflow-y-auto py-2 min-h-[200px]"
         role="log"
         aria-live="polite"
         aria-relevant="additions"
@@ -449,7 +449,7 @@ export default function Terminal({ onBootComplete }: { onBootComplete?: () => vo
 
             {/* Mobile read-only indicator */}
             {isMobile && (
-              <div className="terminal-text py-1" style={{ color: "var(--textDim)" }}>
+              <div className="terminal-text py-1" style={{ color: "var(--text-dim)" }}>
                 {"  Use the chips below to navigate ↓"}
               </div>
             )}

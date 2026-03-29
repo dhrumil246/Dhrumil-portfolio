@@ -19,6 +19,7 @@
   --border: #1e293b;
   --text: #e2e8f0;
   --text-dim: #64748b;
+  --textDim: var(--text-dim); /* alias used by terminal color system */
   --accent: #a3e635; /* Acid Green */
   --green: #4ade80;
   --yellow: #fbbf24;
@@ -44,14 +45,15 @@
   --border: #e2e8f0;
   --text: #1e293b;
   --text-dim: #64748b;
+  --textDim: var(--text-dim); /* alias used by terminal color system */
   --accent: #65a30d; /* Acid Green (Light Mode) */
-  --green: #16a34a;
-  --yellow: #ca8a04;
+  --green: #15803d; /* Darker green for better contrast on light bg */
+  --yellow: #a16207; /* Darker yellow — #ca8a04 fails contrast on white */
   --red: #dc2626;
   --purple: #ea580c; /* Orange */
   --pink: #e11d48; /* Rose */
   --cyan: #0d9488; /* Teal */
-  --orange: #ea580c;
+  --orange: #c2410c; /* Darker orange for contrast */
   --header-bg: #f1f5f9;
   --input-bg: #f8fafc;
   --chip-bg: #e2e8f0;

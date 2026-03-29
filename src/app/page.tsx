@@ -42,7 +42,7 @@ export default function Home() {
       secondContent={
         <div
           data-theme={theme}
-          className="min-h-screen flex flex-col items-center justify-center p-4 theme-transition"
+          className="min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 theme-transition"
           style={{
             background: "var(--bg)",
             backgroundImage:
