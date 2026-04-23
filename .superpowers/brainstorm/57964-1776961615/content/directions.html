@@ -1,0 +1,140 @@
+<h2>Skills Visualization — 3 Directions</h2>
+<p class="subtitle">The current wireframe-icosphere graph feels generic. Which direction tells a better story?</p>
+
+<div class="cards">
+
+  <!-- Option A -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0e17;padding:20px;min-height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+      <!-- Orbital rings mockup -->
+      <div style="position:relative;width:180px;height:180px;">
+        <!-- Central glow -->
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;background:#a3e635;border-radius:50%;box-shadow:0 0 18px 8px #a3e63550;z-index:10;"></div>
+        <!-- Ring 1 - Languages -->
+        <div style="position:absolute;top:50%;left:50%;width:120px;height:48px;border:1.5px solid #a3e63560;border-radius:50%;transform:translate(-50%,-50%) rotateX(72deg);"></div>
+        <div style="position:absolute;top:22%;left:75%;width:10px;height:10px;background:#a3e635;border-radius:50%;box-shadow:0 0 6px #a3e635;transform:translate(-50%,-50%);"></div>
+        <!-- Ring 2 - Frontend -->
+        <div style="position:absolute;top:50%;left:50%;width:140px;height:56px;border:1.5px solid #4ade8060;border-radius:50%;transform:translate(-50%,-50%) rotateX(72deg) rotateZ(55deg);"></div>
+        <div style="position:absolute;top:70%;left:80%;width:10px;height:10px;background:#4ade80;border-radius:50%;box-shadow:0 0 6px #4ade80;transform:translate(-50%,-50%);"></div>
+        <!-- Ring 3 - Backend -->
+        <div style="position:absolute;top:50%;left:50%;width:160px;height:64px;border:1.5px solid #fb923c60;border-radius:50%;transform:translate(-50%,-50%) rotateX(72deg) rotateZ(120deg);"></div>
+        <div style="position:absolute;top:35%;left:18%;width:10px;height:10px;background:#fb923c;border-radius:50%;box-shadow:0 0 6px #fb923c;transform:translate(-50%,-50%);"></div>
+        <!-- Ring 4 - Databases -->
+        <div style="position:absolute;top:50%;left:50%;width:175px;height:70px;border:1.5px solid #fbbf2460;border-radius:50%;transform:translate(-50%,-50%) rotateX(72deg) rotateZ(175deg);"></div>
+        <div style="position:absolute;top:60%;left:28%;width:9px;height:9px;background:#fbbf24;border-radius:50%;box-shadow:0 0 6px #fbbf24;transform:translate(-50%,-50%);"></div>
+        <!-- Ring 5 - Tools -->
+        <div style="position:absolute;top:50%;left:50%;width:190px;height:76px;border:1.5px solid #f43f5e60;border-radius:50%;transform:translate(-50%,-50%) rotateX(72deg) rotateZ(240deg);"></div>
+        <div style="position:absolute;top:78%;left:55%;width:9px;height:9px;background:#f43f5e;border-radius:50%;box-shadow:0 0 6px #f43f5e;transform:translate(-50%,-50%);"></div>
+      </div>
+      <!-- Labels -->
+      <div style="position:absolute;top:12px;right:14px;font-family:monospace;font-size:10px;color:#a3e635;opacity:0.8;">LANGUAGES</div>
+      <div style="position:absolute;bottom:28px;right:10px;font-family:monospace;font-size:10px;color:#4ade80;opacity:0.8;">FRONTEND</div>
+      <div style="position:absolute;top:35%;left:10px;font-family:monospace;font-size:10px;color:#fb923c;opacity:0.8;">BACKEND</div>
+    </div>
+    <div class="card-body">
+      <h3>A — Orbital Orrery</h3>
+      <p>Each skill category travels on its own tilted elliptical orbit around a glowing core — like an atom or solar system. Hovering a node opens a tooltip with the skill names. Very dynamic; conveys <em>everything orbits your core expertise</em>.</p>
+    </div>
+  </div>
+
+  <!-- Option B -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0a0e17;padding:20px;min-height:220px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
+      <!-- Holographic panel mockup -->
+      <div style="width:80px;background:#a3e63508;border:1px solid #a3e63550;border-radius:6px;padding:10px 8px;box-shadow:0 0 12px #a3e63520;transform:perspective(400px) rotateY(-8deg) rotateX(4deg);">
+        <div style="font-family:monospace;font-size:9px;color:#a3e635;margin-bottom:6px;letter-spacing:2px;">LANG</div>
+        <div style="width:100%;height:1px;background:#a3e63530;margin-bottom:6px;"></div>
+        <div style="font-family:monospace;font-size:8px;color:#64748b;line-height:1.7;">JS<br>Python<br>C++<br>Java<br>SQL</div>
+      </div>
+      <div style="width:80px;background:#4ade8008;border:1px solid #4ade8050;border-radius:6px;padding:10px 8px;box-shadow:0 0 12px #4ade8020;transform:perspective(400px) rotateY(0deg) rotateX(-6deg);">
+        <div style="font-family:monospace;font-size:9px;color:#4ade80;margin-bottom:6px;letter-spacing:2px;">FRONT</div>
+        <div style="width:100%;height:1px;background:#4ade8030;margin-bottom:6px;"></div>
+        <div style="font-family:monospace;font-size:8px;color:#64748b;line-height:1.7;">React<br>Next.js<br>GSAP<br>Tailwind</div>
+      </div>
+      <div style="width:80px;background:#fb923c08;border:1px solid #fb923c50;border-radius:6px;padding:10px 8px;box-shadow:0 0 12px #fb923c20;transform:perspective(400px) rotateY(8deg) rotateX(4deg);">
+        <div style="font-family:monospace;font-size:9px;color:#fb923c;margin-bottom:6px;letter-spacing:2px;">BACK</div>
+        <div style="width:100%;height:1px;background:#fb923c30;margin-bottom:6px;"></div>
+        <div style="font-family:monospace;font-size:8px;color:#64748b;line-height:1.7;">Node.js<br>Express<br>REST</div>
+      </div>
+      <div style="width:80px;background:#fbbf2408;border:1px solid #fbbf2450;border-radius:6px;padding:10px 8px;box-shadow:0 0 12px #fbbf2420;transform:perspective(400px) rotateY(-6deg) rotateX(-3deg);">
+        <div style="font-family:monospace;font-size:9px;color:#fbbf24;margin-bottom:6px;letter-spacing:2px;">DB</div>
+        <div style="width:100%;height:1px;background:#fbbf2430;margin-bottom:6px;"></div>
+        <div style="font-family:monospace;font-size:8px;color:#64748b;line-height:1.7;">MySQL<br>Postgres<br>MongoDB</div>
+      </div>
+      <div style="width:80px;background:#f43f5e08;border:1px solid #f43f5e50;border-radius:6px;padding:10px 8px;box-shadow:0 0 12px #f43f5e20;transform:perspective(400px) rotateY(5deg) rotateX(5deg);">
+        <div style="font-family:monospace;font-size:9px;color:#f43f5e;margin-bottom:6px;letter-spacing:2px;">TOOLS</div>
+        <div style="width:100%;height:1px;background:#f43f5e30;margin-bottom:6px;"></div>
+        <div style="font-family:monospace;font-size:8px;color:#64748b;line-height:1.7;">Git<br>Docker<br>OOP<br>DSA</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Floating Hologram Cards</h3>
+      <p>Each category becomes a floating 3D panel — translucent, glowing border, all skills readable at a glance. Cards drift gently in 3D space, with slight depth offsets and hover rotation. Feels like a futuristic IDE or holographic display. Skills are <em>always visible</em>, no hover needed.</p>
+    </div>
+  </div>
+
+  <!-- Option C -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#030608;padding:20px;min-height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+      <!-- Star map / constellation mockup -->
+      <!-- Background stars -->
+      <div style="position:absolute;top:15%;left:20%;width:2px;height:2px;background:#a3e63590;border-radius:50%;box-shadow:0 0 3px #a3e635;"></div>
+      <div style="position:absolute;top:40%;left:8%;width:1px;height:1px;background:#ffffff50;border-radius:50%;"></div>
+      <div style="position:absolute;top:75%;left:15%;width:1px;height:1px;background:#ffffff40;border-radius:50%;"></div>
+      <div style="position:absolute;top:25%;left:85%;width:1px;height:1px;background:#ffffff40;border-radius:50%;"></div>
+      <div style="position:absolute;top:60%;left:88%;width:2px;height:2px;background:#4ade8060;border-radius:50%;box-shadow:0 0 3px #4ade80;"></div>
+      <div style="position:absolute;top:85%;left:70%;width:1px;height:1px;background:#ffffff30;border-radius:50%;"></div>
+      <svg style="position:absolute;inset:0;width:100%;height:100%;" xmlns="http://www.w3.org/2000/svg">
+        <!-- Constellation lines -->
+        <!-- Languages cluster: top-left region -->
+        <line x1="22%" y1="18%" x2="32%" y2="28%" stroke="#a3e63530" stroke-width="0.8"/>
+        <line x1="32%" y1="28%" x2="18%" y2="38%" stroke="#a3e63530" stroke-width="0.8"/>
+        <line x1="32%" y1="28%" x2="42%" y2="22%" stroke="#a3e63530" stroke-width="0.8"/>
+        <!-- Frontend cluster: top-right -->
+        <line x1="68%" y1="15%" x2="80%" y2="25%" stroke="#4ade8030" stroke-width="0.8"/>
+        <line x1="80%" y1="25%" x2="72%" y2="35%" stroke="#4ade8030" stroke-width="0.8"/>
+        <line x1="80%" y1="25%" x2="88%" y2="32%" stroke="#4ade8030" stroke-width="0.8"/>
+        <!-- Backend cluster: right -->
+        <line x1="80%" y1="55%" x2="88%" y2="45%" stroke="#fb923c30" stroke-width="0.8"/>
+        <line x1="80%" y1="55%" x2="85%" y2="65%" stroke="#fb923c30" stroke-width="0.8"/>
+        <!-- DB cluster: bottom-left -->
+        <line x1="25%" y1="72%" x2="15%" y2="60%" stroke="#fbbf2430" stroke-width="0.8"/>
+        <line x1="25%" y1="72%" x2="35%" y2="80%" stroke="#fbbf2430" stroke-width="0.8"/>
+        <!-- Tools cluster: center -->
+        <line x1="50%" y1="50%" x2="42%" y2="40%" stroke="#f43f5e25" stroke-width="0.8"/>
+        <line x1="50%" y1="50%" x2="58%" y2="60%" stroke="#f43f5e25" stroke-width="0.8"/>
+        <!-- Cross-cluster faint links -->
+        <line x1="32%" y1="28%" x2="50%" y2="50%" stroke="#ffffff08" stroke-width="0.6" stroke-dasharray="3,4"/>
+        <line x1="80%" y1="25%" x2="50%" y2="50%" stroke="#ffffff08" stroke-width="0.6" stroke-dasharray="3,4"/>
+      </svg>
+      <!-- Constellation nodes -->
+      <!-- Languages -->
+      <div style="position:absolute;top:15%;left:30%;width:10px;height:10px;background:#a3e635;border-radius:50%;box-shadow:0 0 8px 3px #a3e63560;transform:translate(-50%,-50%);"></div>
+      <div style="position:absolute;top:15%;left:30%;font-family:monospace;font-size:9px;color:#a3e635;transform:translate(8px,-18px);opacity:0.9;">LANGUAGES</div>
+      <div style="position:absolute;top:25%;left:20%;width:5px;height:5px;background:#a3e63580;border-radius:50%;box-shadow:0 0 4px #a3e635;transform:translate(-50%,-50%);"></div>
+      <div style="position:absolute;top:36%;left:17%;width:4px;height:4px;background:#a3e63560;border-radius:50%;transform:translate(-50%,-50%);"></div>
+      <div style="position:absolute;top:20%;left:42%;width:5px;height:5px;background:#a3e63570;border-radius:50%;transform:translate(-50%,-50%);"></div>
+      <!-- Frontend -->
+      <div style="position:absolute;top:13%;left:78%;width:10px;height:10px;background:#4ade80;border-radius:50%;box-shadow:0 0 8px 3px #4ade8060;transform:translate(-50%,-50%);"></div>
+      <div style="position:absolute;top:13%;left:78%;font-family:monospace;font-size:9px;color:#4ade80;transform:translate(-55px,-18px);opacity:0.9;">FRONTEND</div>
+      <div style="position:absolute;top:23%;left:88%;width:5px;height:5px;background:#4ade8080;border-radius:50%;transform:translate(-50%,-50%);"></div>
+      <div style="position:absolute;top:33%;left:71%;width:4px;height:4px;background:#4ade8060;border-radius:50%;transform:translate(-50%,-50%);"></div>
+      <!-- Backend -->
+      <div style="position:absolute;top:52%;left:82%;width:9px;height:9px;background:#fb923c;border-radius:50%;box-shadow:0 0 8px 3px #fb923c60;transform:translate(-50%,-50%);"></div>
+      <div style="position:absolute;top:52%;left:82%;font-family:monospace;font-size:9px;color:#fb923c;transform:translate(-52px,6px);opacity:0.9;">BACKEND</div>
+      <!-- DB -->
+      <div style="position:absolute;top:70%;left:25%;width:9px;height:9px;background:#fbbf24;border-radius:50%;box-shadow:0 0 8px 3px #fbbf2460;transform:translate(-50%,-50%);"></div>
+      <div style="position:absolute;top:70%;left:25%;font-family:monospace;font-size:9px;color:#fbbf24;transform:translate(8px,6px);opacity:0.9;">DATABASES</div>
+      <!-- Tools -->
+      <div style="position:absolute;top:50%;left:50%;width:9px;height:9px;background:#f43f5e;border-radius:50%;box-shadow:0 0 8px 3px #f43f5e60;transform:translate(-50%,-50%);"></div>
+      <div style="position:absolute;top:50%;left:50%;font-family:monospace;font-size:9px;color:#f43f5e;transform:translate(8px,-16px);opacity:0.9;">TOOLS</div>
+    </div>
+    <div class="card-body">
+      <h3>C — Constellation Map</h3>
+      <p>Skills become stars grouped into constellations by category. Faint constellation lines connect the stars; clicking a cluster zooms it and reveals the skill names. Background is deep space with subtle particle drift. Tells the story of <em>charting your own tech universe</em>.</p>
+    </div>
+  </div>
+
+</div>
+
+<p class="subtitle" style="margin-top:16px;">Click a card to select it — then let me know in the terminal.</p>

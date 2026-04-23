@@ -70,7 +70,7 @@ export default function TerminalWindow() {
 
   return (
     <div
-      className="flex-1 min-w-0 rounded-xl overflow-hidden flex flex-col theme-transition"
+      className="flex-1 min-w-0 rounded-xl flex flex-col theme-transition"
       style={{
         background: "var(--surface)",
         border: "1px solid var(--border)",
@@ -81,7 +81,7 @@ export default function TerminalWindow() {
     >
       {/* ─── Title Bar ─── */}
       <div
-        className="flex items-center px-4 py-2.5 gap-2 select-none shrink-0"
+        className="flex items-center px-4 py-2.5 gap-2 select-none shrink-0 rounded-t-xl"
         style={{
           background: "var(--header-bg)",
           borderBottom: "1px solid var(--border)",

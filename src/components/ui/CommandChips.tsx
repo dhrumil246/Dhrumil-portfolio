@@ -39,6 +39,7 @@ export default function CommandChips({ onCommand, visible = true }: CommandChips
         borderTop: "1px solid var(--border)",
         background: "var(--header-bg)",
         flexShrink: 0,
+        borderRadius: "0 0 0.75rem 0.75rem",
       }}
       role="toolbar"
       aria-label="Quick commands"
