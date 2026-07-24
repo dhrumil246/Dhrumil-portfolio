@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+// Static portfolio data — imported directly, no API round-trip needed.
 
 const PROFILE = {
   name: "Dhrumil Amin",
@@ -149,18 +149,15 @@ const ACHIEVEMENTS = [
   "Finalist at MSBC DataQuest 2025",
   "Finalist at RECKON 7.0 2026",
   "Lead Organizer of Institute-level Line Following Robot Race",
-  "Lead Organizer of Institute-level Event C-Quest"
+  "Lead Organizer of Institute-level Event C-Quest",
 ];
 
-export async function GET() {
-  // Simulate network delay to make the boot sequence realistic
-  await new Promise((resolve) => setTimeout(resolve, 800));
-
-return NextResponse.json({
+export const PORTFOLIO_DATA = {
   PROFILE,
   SKILLS,
   PROJECTS,
   EXPERIENCE_DATA,
-  ACHIEVEMENTS,  // 👈 add this
-});
-}
+  ACHIEVEMENTS,
+};
+
+export type PortfolioData = typeof PORTFOLIO_DATA;

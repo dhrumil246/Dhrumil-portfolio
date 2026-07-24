@@ -56,7 +56,7 @@ function ProjectCard({
     }
   });
 
-  const dimColor = theme === "dark" ? "#64748b" : "#94a3b8";
+  const dimColor = theme === "dark" ? "#94a3b8" : "#475569";
   const surfaceColor = theme === "dark" ? "#0d1117" : "#ffffff";
   const borderColor = theme === "dark" ? "#1e293b" : "#e2e8f0";
 
@@ -191,11 +191,13 @@ function ProjectCard({
 export default function ProjectScene({ reducedMotion, theme }: ProjectSceneProps) {
   const pData = useTerminalStore((s) => s.portfolioData?.PROJECTS) ?? [];
   const [activeIndex, setActiveIndex] = useState(0);
+  const pausedRef = useRef(false);
 
-  // Auto-advance every 3.5s
+  // Auto-advance every 3.5s — pauses while the user is hovering the panel
   useEffect(() => {
     if (reducedMotion || pData.length <= 1) return;
     const id = setInterval(() => {
+      if (pausedRef.current) return;
       setActiveIndex((i) => (i + 1) % pData.length);
     }, 3500);
     return () => clearInterval(id);
@@ -222,7 +224,10 @@ export default function ProjectScene({ reducedMotion, theme }: ProjectSceneProps
   const accentColor = theme === "dark" ? "#a3e635" : "#65a30d";
 
   return (
-    <group>
+    <group
+      onPointerOver={() => (pausedRef.current = true)}
+      onPointerOut={() => (pausedRef.current = false)}
+    >
       {/* Scene label */}
       <Text
         position={[0, 1.3, 0]}
@@ -256,6 +261,8 @@ export default function ProjectScene({ reducedMotion, theme }: ProjectSceneProps
           key={`dot-${i}`}
           position={[(i - (pData.length - 1) / 2) * 0.24, -1.1, 0]}
           onClick={() => setActiveIndex(i)}
+          onPointerOver={() => (document.body.style.cursor = "pointer")}
+          onPointerOut={() => (document.body.style.cursor = "auto")}
         >
           <circleGeometry args={[i === activeIndex ? 0.055 : 0.032, 16]} />
           <meshBasicMaterial

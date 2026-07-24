@@ -1,5 +1,6 @@
 import type { TerminalLine } from "@/store/useTerminalStore";
 import { useTerminalStore } from "@/store/useTerminalStore";
+import { PORTFOLIO_DATA } from "@/lib/portfolioData";
 import {
   parseCommand,
   suggestCommand,
@@ -59,10 +60,7 @@ const commands: Record<string, CommandHandler> = {
   ],
 
   about: () => {
-    const data = useTerminalStore.getState().portfolioData;
-    const p = data?.PROFILE;
-    
-    if (!p) return [EMPTY, line("  Data not loaded yet. Try again in a moment.", "yellow"), EMPTY];
+    const p = PORTFOLIO_DATA.PROFILE;
 
     return [
       EMPTY,
@@ -83,10 +81,7 @@ const commands: Record<string, CommandHandler> = {
   },
 
   skills: () => {
-    const data = useTerminalStore.getState().portfolioData;
-    const s = data?.SKILLS;
-
-    if (!s) return [EMPTY, line("  Data not loaded yet. Try again in a moment.", "yellow"), EMPTY];
+    const s = PORTFOLIO_DATA.SKILLS;
 
     const lines: TerminalLine[] = [
       EMPTY,
@@ -112,10 +107,7 @@ const commands: Record<string, CommandHandler> = {
   },
 
   projects: (args, flags) => {
-    const data = useTerminalStore.getState().portfolioData;
-    const pData = data?.PROJECTS;
-    
-    if (!pData) return [EMPTY, line("  Data not loaded yet. Try again in a moment.", "yellow"), EMPTY];
+    const pData = PORTFOLIO_DATA.PROJECTS;
 
     let filteredProjects = pData;
 
@@ -160,10 +152,7 @@ const commands: Record<string, CommandHandler> = {
   },
 
   project: (args) => {
-    const data = useTerminalStore.getState().portfolioData;
-    const pData = data?.PROJECTS;
-    
-    if (!pData) return [EMPTY, line("  Data not loaded yet. Try again in a moment.", "yellow"), EMPTY];
+    const pData = PORTFOLIO_DATA.PROJECTS;
 
     if (!args[0]) {
       return [
@@ -205,10 +194,7 @@ const commands: Record<string, CommandHandler> = {
   },
 
   experience: () => {
-    const data = useTerminalStore.getState().portfolioData;
-    const eData = data?.EXPERIENCE_DATA;
-    
-    if (!eData) return [EMPTY, line("  Data not loaded yet. Try again in a moment.", "yellow"), EMPTY];
+    const eData = PORTFOLIO_DATA.EXPERIENCE_DATA;
 
     const lines: TerminalLine[] = [
       EMPTY,
@@ -229,10 +215,7 @@ const commands: Record<string, CommandHandler> = {
   },
 
   achievements: () => {
-    const data = useTerminalStore.getState().portfolioData;
-    const aData = data?.ACHIEVEMENTS;
-    
-    if (!aData) return [EMPTY, line("  Data not loaded yet. Try again in a moment.", "yellow"), EMPTY];
+    const aData = PORTFOLIO_DATA.ACHIEVEMENTS;
 
     const lines: TerminalLine[] = [
       EMPTY,
@@ -259,9 +242,7 @@ const commands: Record<string, CommandHandler> = {
   },
 
   contact: () => {
-    const data = useTerminalStore.getState().portfolioData;
-    const p = data?.PROFILE;
-    if (!p) return [EMPTY, line("  Data not loaded yet. Try again in a moment.", "yellow"), EMPTY];
+    const p = PORTFOLIO_DATA.PROFILE;
 
     const lines: TerminalLine[] = [
       EMPTY,
@@ -318,9 +299,7 @@ const commands: Record<string, CommandHandler> = {
 
   // ─── Easter Eggs ───
   whoami: () => {
-    const data = useTerminalStore.getState().portfolioData;
-    const p = data?.PROFILE;
-    if (!p) return [EMPTY, line("  Data not loaded yet. Try again in a moment.", "yellow"), EMPTY];
+    const p = PORTFOLIO_DATA.PROFILE;
 
     return [
       EMPTY,
@@ -360,16 +339,7 @@ const commands: Record<string, CommandHandler> = {
 
 // ─── Welcome Message ───
 export function getWelcomeMessage(): TerminalLine[] {
-  const data = useTerminalStore.getState().portfolioData;
-  const p = data?.PROFILE;
-
-  if (!p) {
-    return [
-      EMPTY,
-      line("  Initializing...", "textDim"),
-      EMPTY,
-    ];
-  }
+  const p = PORTFOLIO_DATA.PROFILE;
 
   return [
     EMPTY,

@@ -1,6 +1,7 @@
 // Zustand v5 — create<State>()(...) double-call pattern for TypeScript
 import { create } from "zustand";
 import { detectDevice, type DeviceType } from "@/lib/deviceCheck";
+import { PORTFOLIO_DATA, type PortfolioData } from "@/lib/portfolioData";
 
 export interface TerminalLine {
   text: string;
@@ -45,10 +46,8 @@ interface TerminalState {
   deviceType: DeviceType;
   setDeviceType: (type: DeviceType) => void;
 
-  // Dynamic Data
-  portfolioData: any | null;
-  isLoadingData: boolean;
-  fetchPortfolioData: () => Promise<void>;
+  // Portfolio data (static, imported)
+  portfolioData: PortfolioData;
 }
 
 // Zustand v5: create<T>()((set, get) => ...)
@@ -112,23 +111,6 @@ export const useTerminalStore = create<TerminalState>()((set, get) => ({
   deviceType: "desktop",
   setDeviceType: (type) => set({ deviceType: type }),
 
-  // ─── Dynamic Data ───
-  portfolioData: null,
-  isLoadingData: false,
-  fetchPortfolioData: async () => {
-    set({ isLoadingData: true });
-    try {
-      const res = await fetch("/api/portfolio");
-      if (res.ok) {
-        const data = await res.json();
-        set({ portfolioData: data });
-      } else {
-        console.error("Failed to fetch portfolio data", res.status);
-      }
-    } catch (err) {
-      console.error("Error fetching portfolio data", err);
-    } finally {
-      set({ isLoadingData: false });
-    }
-  },
+  // ─── Portfolio Data ───
+  portfolioData: PORTFOLIO_DATA,
 }));

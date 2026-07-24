@@ -161,12 +161,7 @@ function BootLine({
 function BootSequence({ onComplete }: { onComplete: () => void }) {
   const [phase, setPhase] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const pData = useTerminalStore((s) => s.portfolioData);
-  const profile = pData?.PROFILE || {
-    name: "GUEST_USER",
-    title: "System Initialized",
-    tagline: "Connection active.",
-  };
+  const profile = useTerminalStore((s) => s.portfolioData.PROFILE);
 
   // Phase progression
   const advance = useCallback(() => {
@@ -290,10 +285,7 @@ export default function Terminal({ onBootComplete }: { onBootComplete?: () => vo
   // After boot finishes, push welcome into store, focus input, notify parent
   const handleBootComplete = useCallback(() => {
     // Push the static welcome message into the store so it persists
-    const pData = useTerminalStore.getState().portfolioData;
-    const name = pData?.PROFILE?.name || "GUEST_USER";
-    const title = pData?.PROFILE?.title || "System Initialized";
-    const tagline = pData?.PROFILE?.tagline || "Connection active.";
+    const { name, title, tagline } = useTerminalStore.getState().portfolioData.PROFILE;
 
     appendOutput([
       EMPTY,
@@ -309,11 +301,6 @@ export default function Terminal({ onBootComplete }: { onBootComplete?: () => vo
     onBootComplete?.();
     setTimeout(() => inputRef.current?.focus(), 100);
   }, [onBootComplete, appendOutput]);
-
-  // Fetch dynamic data on mount
-  useEffect(() => {
-    useTerminalStore.getState().fetchPortfolioData();
-  }, []);
 
   // Execute a command
   const runCommand = useCallback(

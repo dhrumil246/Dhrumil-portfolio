@@ -6,6 +6,7 @@ import { Text } from "@react-three/drei/core/Text";
 import { Line } from "@react-three/drei";
 import * as THREE from "three";
 import { useTerminalStore } from "@/store/useTerminalStore";
+import { PORTFOLIO_DATA } from "@/lib/portfolioData";
 
 interface SkillsSceneProps {
   reducedMotion: boolean;
@@ -16,14 +17,23 @@ const CATEGORY_COLORS: Record<string, string> = {
   languages: "#a3e635",
   frontend: "#4ade80",
   backend: "#fb923c",
-  devops: "#fbbf24",
+  databases: "#38bdf8",
   tools: "#f43f5e",
 };
 
-// ─── Spinning TorusKnot core ───
+// Initials for the core identity badge, e.g. "Dhrumil Amin" → "DA"
+const INITIALS = PORTFOLIO_DATA.PROFILE.name
+  .split(/\s+/)
+  .map((w) => w[0])
+  .join("")
+  .slice(0, 2)
+  .toUpperCase();
+
+// ─── Spinning TorusKnot core — the developer at the center of the graph ───
 function CoreNode({ theme }: { theme: string }) {
   const knotRef = useRef<THREE.Mesh>(null);
   const color = theme === "dark" ? "#a3e635" : "#65a30d";
+  const textColor = theme === "dark" ? "#e2e8f0" : "#1e293b";
 
   useFrame((state) => {
     if (!knotRef.current) return;
@@ -39,6 +49,17 @@ function CoreNode({ theme }: { theme: string }) {
         <torusKnotGeometry args={[0.15, 0.045, 80, 10]} />
         <meshBasicMaterial color={color} wireframe />
       </mesh>
+      {/* Identity badge — sits below the knot, clear of the core's bloom */}
+      <Text
+        position={[0, -0.26, 0]}
+        fontSize={0.065}
+        color={textColor}
+        anchorX="center"
+        anchorY="middle"
+        letterSpacing={0.12}
+      >
+        {INITIALS}
+      </Text>
     </group>
   );
 }
@@ -87,7 +108,7 @@ function SkillNode({
   });
 
   const textColor = theme === "dark" ? "#e2e8f0" : "#1e293b";
-  const dimColor = theme === "dark" ? "#64748b" : "#94a3b8";
+  const dimColor = theme === "dark" ? "#94a3b8" : "#475569";
 
   return (
     <group

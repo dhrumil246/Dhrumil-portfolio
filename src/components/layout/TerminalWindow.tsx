@@ -1,12 +1,11 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTerminalStore } from "@/store/useTerminalStore";
 import { detectDevice } from "@/lib/deviceCheck";
 import Terminal from "@/components/terminal/Terminal";
 import CommandChips from "@/components/ui/CommandChips";
 import ThemeToggle from "@/components/ui/ThemeToggle";
-import RenderToggle from "@/components/ui/RenderToggle";
 import { executeCommand } from "@/components/terminal/commands";
 import { getHistoryPrompt } from "@/components/terminal/Prompt";
 import { line } from "@/lib/commandParser";
@@ -20,6 +19,18 @@ export default function TerminalWindow() {
 
   // Track boot state so chips animate in after boot
   const [booted, setBooted] = useState(false);
+  const autoOpenedRender = useRef(false);
+
+  // Auto-open the 3D panel once on desktop's first boot — it's the portfolio's
+  // showcase and was otherwise hidden behind a toggle most visitors never find.
+  useEffect(() => {
+    if (autoOpenedRender.current || !booted) return;
+    const state = useTerminalStore.getState();
+    if (state.deviceType !== "mobile" && !state.renderEnabled) {
+      autoOpenedRender.current = true;
+      state.toggleRender();
+    }
+  }, [booted]);
 
   // Detect device on mount
   useEffect(() => {
@@ -114,7 +125,6 @@ export default function TerminalWindow() {
         {/* Toggles */}
         <div className="flex gap-1.5">
           <ThemeToggle />
-          <RenderToggle />
         </div>
       </div>
 
