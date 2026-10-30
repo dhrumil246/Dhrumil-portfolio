@@ -16,6 +16,8 @@ export interface TerminalLine {
     | "cyan"
     | "orange";
   href?: string;
+  /** Tapping the line runs this command — how touch users reach `project <name>` */
+  cmd?: string;
 }
 
 interface TerminalState {

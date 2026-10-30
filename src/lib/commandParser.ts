@@ -139,3 +139,13 @@ function levenshtein(a: string, b: string): number {
   }
   return matrix[b.length][a.length];
 }
+/**
+ * A line that runs a command when tapped (touch devices have no input)
+ */
+export function cmdLine(
+  text: string,
+  color: TerminalLine["color"],
+  cmd: string
+): TerminalLine {
+  return { text, color, cmd };
+}

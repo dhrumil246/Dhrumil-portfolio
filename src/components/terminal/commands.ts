@@ -5,6 +5,7 @@ import {
   parseCommand,
   suggestCommand,
   line,
+  cmdLine,
   EMPTY,
   type ParsedCommand,
 } from "@/lib/commandParser";
@@ -20,6 +21,7 @@ export interface Project {
   impact: string;
   link: string;
   year: string;
+  caseStudy?: { heading: string; lines: string[] }[];
 }
 
 
@@ -143,17 +145,29 @@ const commands: Record<string, CommandHandler> = {
       line("  ──────────────────────────────────────", "accent"),
       EMPTY,
     ];
+    const isMobile = useTerminalStore.getState().deviceType === "mobile";
     filteredProjects.forEach((p: any) => {
-      lines.push(line(`  ${p.title}  (${p.year})`, "green"));
+      // Title is tappable: the only way into `project <name>` without a keyboard
+      const tag = p.caseStudy ? "  · case study" : "";
+      lines.push(cmdLine(`  ${p.title}  (${p.year})${tag}`, "green", `project ${p.name}`));
       lines.push(line(`    ${p.description}`, "text"));
       lines.push(line(`    Tech: ${p.tech.join(", ")}`, "textDim"));
       lines.push(line(`    Impact: ${p.impact}`, "yellow"));
       lines.push(EMPTY);
     });
-    lines.push(line('  Type "project <name>" for details:', "textDim"));
     lines.push(
-      line(`  ${filteredProjects.map((p: any) => p.name).join(", ")}`, "accent")
+      line(
+        isMobile
+          ? "  Tap a project title for details."
+          : '  Click a project title, or type "project <name>":',
+        "textDim"
+      )
     );
+    if (!isMobile) {
+      lines.push(
+        line(`  ${filteredProjects.map((p: any) => p.name).join(", ")}`, "accent")
+      );
+    }
     lines.push(EMPTY);
     return lines;
   },
@@ -197,6 +211,14 @@ const commands: Record<string, CommandHandler> = {
       line(`  Link:    ${p.link}`, "orange", p.link.startsWith("http") ? p.link : `https://${p.link}`),
       line(`  Year:    ${p.year}`, "textDim"),
       EMPTY,
+      // Case study: what was built, what failed, what the numbers say
+      ...(p.caseStudy ?? []).flatMap(
+        (section: { heading: string; lines: string[] }) => [
+          line(`  ${section.heading}`, "accent"),
+          ...section.lines.map((l) => line(`  • ${l}`, "text")),
+          EMPTY,
+        ]
+      ),
     ];
   },
 

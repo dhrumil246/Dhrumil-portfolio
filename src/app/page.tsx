@@ -22,6 +22,8 @@ const RenderCanvas = dynamic(() => import("@/render/RenderCanvas"), {
 export default function Home() {
   const [hasBooted, setHasBooted] = useState(false);
   const theme = useTerminalStore((s) => s.theme);
+  const isMobile = useTerminalStore((s) => s.deviceType === "mobile");
+  const { name, title } = useTerminalStore((s) => s.portfolioData.PROFILE);
   const renderEnabled = useTerminalStore((s) => s.renderEnabled);
   const toggleRender = useTerminalStore((s) => s.toggleRender);
   const lastCommand = useTerminalStore((s) => s.lastCommand);
@@ -44,7 +46,7 @@ export default function Home() {
       secondContent={
         <div
           data-theme={theme}
-          className="min-h-screen flex flex-col items-center justify-center p-2 sm:p-4 theme-transition"
+          className="min-h-screen flex flex-col items-center justify-center p-4 theme-transition"
           style={{
             background: "var(--bg)",
             backgroundImage:
@@ -57,7 +59,7 @@ export default function Home() {
             style={{ maxWidth: renderEnabled ? 1100 : 760 }}
           >
             {/* Terminal — always visible */}
-            <TerminalWindow />
+            <TerminalWindow revealed={hasBooted} />
 
             {/* Render Panel */}
             {renderEnabled && (
@@ -115,10 +117,11 @@ export default function Home() {
             style={{ maxWidth: renderEnabled ? 1100 : 760 }}
           >
             <span className="terminal-text text-xs text-[var(--text-dim)]">
-              Dhrumil Amin • Developer
+              {name} • {title.split(".")[0]}
             </span>
             <span className="terminal-text text-xs text-[var(--text-dim)]">
-              render: {renderEnabled ? "on" : "off"} • {theme}
+              {/* render mode doesn't exist on mobile, so don't report on it */}
+              {isMobile ? theme : `render: ${renderEnabled ? "on" : "off"} • ${theme}`}
             </span>
           </div>
         </div>

@@ -64,11 +64,9 @@
 }
 
 /* ─── Base Styles ─── */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* No `* { margin: 0; padding: 0 }` reset here: Tailwind's preflight already does it
+   inside @layer base. An unlayered copy beats every layered utility, which silently
+   zeroed all p-* / m-* classes site-wide. */
 
 html,
 body {
@@ -258,4 +256,28 @@ body {
   ::view-transition-new(*) {
     animation: none !important;
   }
+}
+/* ─── Tappable command lines ─── */
+/* Underline is always visible — touch screens have no hover to reveal it */
+.cmd-link {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: underline dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  position: relative;
+}
+/* Grow the hit area to 44px tall without changing the line's layout */
+.cmd-link::after {
+  content: "";
+  position: absolute;
+  inset: -11px 0;
+}
+.cmd-link:hover {
+  text-decoration-style: solid;
 }

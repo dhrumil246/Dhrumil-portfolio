@@ -3,56 +3,75 @@
 import { useEffect, useState, useRef } from "react";
 import ShapeGrid from "@/components/ui/ShapeGrid";
 
+// Real stack, real numbers — the boot log doubles as a project teaser.
 const BOOT_LOGS = [
-  "BIOS Version 2.15.1234. Copyright (C)",
-  "Memory: 64TB Quantum RAM Verified",
-  "Mounting virtual filesystems... [OK]",
-  "Loading kernel modules: react.ko, three.ko, zustand.ko... [OK]",
+  "BIOS v2.15 — dhrumil@portfolio",
+  "Mounting /projects... [OK]",
+  "Loading kernel modules: react, three, zustand... [OK]",
+  "Loading WaferCNN weights... [615,801 params]",
+  "Starting MCP server... [14 tools ready]",
+  "Calibrating conformal intervals... [94.0% coverage]",
+  "Opening Sarvam realtime stream... [hi-IN]",
+  "Bridging Twilio media socket... [Connected]",
   "Initializing WebGL context... [OK]",
-  "Bypassing firewall protocols... [Bypassed]",
-  "Decrypting auth payloads... [Decrypted]",
-  "Injecting dependencies: Next.js, Framer, GSAP... [OK]",
-  "Establishing secure uplink to portfolio server... [Connected]",
-  "Fetching project assets... [OK]",
-  "Compiling rendering shaders... [Done]",
+  "Compiling render shaders... [Done]",
   "System diagnostics normal.",
-  ""
 ];
+
+// How long the "SYSTEM READY" prompt shows before advancing on its own.
+const AUTO_ADVANCE_MS = 700;
 
 export default function EntryScreen({ onComplete }: { onComplete: () => void }) {
   const [logs, setLogs] = useState<string[]>([]);
   const [showPrompt, setShowPrompt] = useState(false);
-  
+  // One guard for both paths (skip and auto-advance). A ref, not a local, because
+  // the parent passes a fresh onComplete each render and effects re-subscribe.
+  const triggered = useRef(false);
+  const finish = useRef(onComplete);
+  finish.current = onComplete;
+  const trigger = () => {
+    if (triggered.current) return;
+    triggered.current = true;
+    finish.current();
+  };
+
   // Stream logs
   useEffect(() => {
     let currentIndex = 0;
+    let promptTimer: ReturnType<typeof setTimeout>;
     const interval = setInterval(() => {
       if (currentIndex < BOOT_LOGS.length) {
-        setLogs((prev) => [...prev, BOOT_LOGS[currentIndex]]);
+        // Read the entry now: the updater can run later, after the increment,
+        // which appended BOOT_LOGS[length] (undefined) as a blank timestamped row
+        const entry = BOOT_LOGS[currentIndex];
+        setLogs((prev) => [...prev, entry]);
         currentIndex++;
       } else {
         clearInterval(interval);
-        setTimeout(() => setShowPrompt(true), 400); // slight pause before prompt
+        promptTimer = setTimeout(() => setShowPrompt(true), 400); // slight pause before prompt
       }
     }, 75); // fast log speed
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(promptTimer);
+    };
   }, []);
 
-  // Handle interaction (allow skip)
+  // No click gate: hand off on our own once the prompt has been read
   useEffect(() => {
-    let hasTriggered = false;
+    if (!showPrompt) return;
+    const t = setTimeout(trigger, AUTO_ADVANCE_MS);
+    return () => clearTimeout(t);
+  }, [showPrompt]);
 
+  // Click / Enter / Space / Esc skips at any point
+  useEffect(() => {
     const handleInteraction = (e: KeyboardEvent | MouseEvent) => {
       if (e.type === "keydown" && !["Enter", " ", "Escape"].includes((e as KeyboardEvent).key)) return;
-      if (hasTriggered) return;
-      hasTriggered = true;
-
       window.removeEventListener("keydown", handleInteraction);
       window.removeEventListener("click", handleInteraction);
-
-      // Instantly call onComplete to let PixelTransition manage the visual change
-      onComplete();
+      trigger();
     };
 
     window.addEventListener("keydown", handleInteraction);
@@ -62,7 +81,7 @@ export default function EntryScreen({ onComplete }: { onComplete: () => void }) 
       window.removeEventListener("keydown", handleInteraction);
       window.removeEventListener("click", handleInteraction);
     };
-  }, [onComplete]);
+  }, []);
 
   return (
     <div
@@ -98,16 +117,13 @@ export default function EntryScreen({ onComplete }: { onComplete: () => void }) 
         />
       </div>
 
-      {/* ─── CRT Scanline Overlay ─── */}
-      <div 
-        className="absolute inset-0 pointer-events-none opacity-[0.05] z-10" 
-        style={{ 
-          backgroundImage: `
-            linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
-          `,
-          backgroundSize: '40px 40px'
-        }} 
+      {/* ─── CRT Scanlines (horizontal only — ShapeGrid already draws the grid) ─── */}
+      <div
+        className="absolute inset-0 pointer-events-none z-10"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0px, rgba(0, 0, 0, 0.18) 1px, transparent 1px, transparent 3px)",
+        }}
       />
       
       {/* ─── Central Console Box ─── */}
@@ -150,7 +166,7 @@ export default function EntryScreen({ onComplete }: { onComplete: () => void }) 
                 className="font-bold text-[14px] md:text-[15px] animate-pulse" 
                 style={{ color: "var(--green)" }}
               >
-                {"> SYSTEM READY. [PRESS ENTER] OR CLICK TO INITIATE UPLINK_"}
+                {"> SYSTEM READY. INITIATING UPLINK_"}
               </div>
             )}
           </div>

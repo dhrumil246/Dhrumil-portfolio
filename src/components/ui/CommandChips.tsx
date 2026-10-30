@@ -13,6 +13,7 @@ const CHIPS = [
   "skills",
   "projects",
   "experience",
+  "achievements",
   "contact",
   "resume",
 ] as const;
@@ -33,7 +34,9 @@ export default function CommandChips({ onCommand, visible = true }: CommandChips
     <div
       style={{
         display: "flex",
-        flexWrap: "wrap",
+        // Mobile: one scrolling row — wrapped 44px chips ate a quarter of the screen
+        flexWrap: isMobile ? "nowrap" : "wrap",
+        overflowX: isMobile ? "auto" : undefined,
         gap: 8,
         padding: "10px 12px",
         borderTop: "1px solid var(--border)",
@@ -53,7 +56,9 @@ export default function CommandChips({ onCommand, visible = true }: CommandChips
             color: "var(--accent)",
             border: "1px solid var(--border)",
             borderRadius: 6,
-            padding: "5px 14px",
+            padding: "5px 11px",
+            minHeight: isMobile ? 44 : undefined, // touch target
+            flexShrink: 0,
             fontSize: 12,
             fontFamily: "var(--font-mono), monospace",
             cursor: "pointer",
@@ -84,7 +89,7 @@ export default function CommandChips({ onCommand, visible = true }: CommandChips
             color: renderEnabled ? "var(--bg)" : "var(--accent)",
             border: `1px solid ${renderEnabled ? "var(--accent)" : "var(--border)"}`,
             borderRadius: 6,
-            padding: "5px 14px",
+            padding: "5px 11px",
             fontSize: 12,
             fontFamily: "var(--font-mono), monospace",
             cursor: "pointer",

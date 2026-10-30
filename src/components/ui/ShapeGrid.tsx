@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { prefersReducedMotion } from '@/lib/deviceCheck';
 
 type CanvasStrokeStyle = string | CanvasGradient | CanvasPattern;
 
@@ -40,19 +41,33 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
+    const reducedMotion = prefersReducedMotion();
     const isHex = shape === 'hexagon';
     const isTri = shape === 'triangle';
     const hexHoriz = squareSize * 1.5;
     const hexVert = squareSize * Math.sqrt(3);
 
+    // Drawing happens in CSS pixels (w × h); the backing store is scaled by
+    // devicePixelRatio so lines stay sharp on retina displays.
+    let w = 0;
+    let h = 0;
     const resizeCanvas = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
-      numSquaresX.current = Math.ceil(canvas.width / squareSize) + 1;
-      numSquaresY.current = Math.ceil(canvas.height / squareSize) + 1;
+      const dpr = window.devicePixelRatio || 1;
+      w = canvas.offsetWidth;
+      h = canvas.offsetHeight;
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx?.setTransform(dpr, 0, 0, dpr, 0, 0);
+      numSquaresX.current = Math.ceil(w / squareSize) + 1;
+      numSquaresY.current = Math.ceil(h / squareSize) + 1;
     };
 
-    window.addEventListener('resize', resizeCanvas);
+    // drawGrid is declared below, so the reduced-motion repaint lives in the listener
+    const onResize = () => {
+      resizeCanvas();
+      if (reducedMotion) drawGrid(); // no loop to repaint after a resize
+    };
+    window.addEventListener('resize', onResize);
     resizeCanvas();
 
     const drawHex = (cx: number, cy: number, size: number) => {
@@ -92,15 +107,15 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
 
     const drawGrid = () => {
       if (!ctx) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, w, h);
 
       if (isHex) {
         const colShift = Math.floor(gridOffset.current.x / hexHoriz);
         const offsetX = ((gridOffset.current.x % hexHoriz) + hexHoriz) % hexHoriz;
         const offsetY = ((gridOffset.current.y % hexVert) + hexVert) % hexVert;
 
-        const cols = Math.ceil(canvas.width / hexHoriz) + 3;
-        const rows = Math.ceil(canvas.height / hexVert) + 3;
+        const cols = Math.ceil(w / hexHoriz) + 3;
+        const rows = Math.ceil(h / hexVert) + 3;
 
         for (let col = -2; col < cols; col++) {
           for (let row = -2; row < rows; row++) {
@@ -129,8 +144,8 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
         const offsetX = ((gridOffset.current.x % halfW) + halfW) % halfW;
         const offsetY = ((gridOffset.current.y % squareSize) + squareSize) % squareSize;
 
-        const cols = Math.ceil(canvas.width / halfW) + 4;
-        const rows = Math.ceil(canvas.height / squareSize) + 4;
+        const cols = Math.ceil(w / halfW) + 4;
+        const rows = Math.ceil(h / squareSize) + 4;
 
         for (let col = -2; col < cols; col++) {
           for (let row = -2; row < rows; row++) {
@@ -157,8 +172,8 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
         const offsetX = ((gridOffset.current.x % squareSize) + squareSize) % squareSize;
         const offsetY = ((gridOffset.current.y % squareSize) + squareSize) % squareSize;
 
-        const cols = Math.ceil(canvas.width / squareSize) + 3;
-        const rows = Math.ceil(canvas.height / squareSize) + 3;
+        const cols = Math.ceil(w / squareSize) + 3;
+        const rows = Math.ceil(h / squareSize) + 3;
 
         for (let col = -2; col < cols; col++) {
           for (let row = -2; row < rows; row++) {
@@ -184,8 +199,8 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
         const offsetX = ((gridOffset.current.x % squareSize) + squareSize) % squareSize;
         const offsetY = ((gridOffset.current.y % squareSize) + squareSize) % squareSize;
 
-        const cols = Math.ceil(canvas.width / squareSize) + 3;
-        const rows = Math.ceil(canvas.height / squareSize) + 3;
+        const cols = Math.ceil(w / squareSize) + 3;
+        const rows = Math.ceil(h / squareSize) + 3;
 
         for (let col = -2; col < cols; col++) {
           for (let row = -2; row < rows; row++) {
@@ -339,12 +354,17 @@ const ShapeGrid: React.FC<ShapeGridProps> = ({
       hoveredSquareRef.current = null;
     };
 
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
-    requestRef.current = requestAnimationFrame(updateAnimation);
+    // CSS reduced-motion rules can't stop a rAF loop: draw one static frame instead
+    if (reducedMotion) {
+      drawGrid();
+    } else {
+      canvas.addEventListener('mousemove', handleMouseMove);
+      canvas.addEventListener('mouseleave', handleMouseLeave);
+      requestRef.current = requestAnimationFrame(updateAnimation);
+    }
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', onResize);
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('mouseleave', handleMouseLeave);

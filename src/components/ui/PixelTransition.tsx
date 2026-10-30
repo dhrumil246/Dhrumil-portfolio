@@ -1,5 +1,6 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { gsap } from 'gsap';
+import { prefersReducedMotion } from '@/lib/deviceCheck';
 
 interface PixelTransitionProps {
   firstContent: React.ReactNode;
@@ -26,6 +27,9 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
   const pixelGridRef = useRef<HTMLDivElement | null>(null);
   const activeRef = useRef<HTMLDivElement | null>(null);
   const delayedCallRef = useRef<gsap.core.Tween | null>(null);
+  // Once the reveal finishes, unmount firstContent so its animations stop
+  // instead of running unseen underneath the second content all session.
+  const [firstDone, setFirstDone] = useState(false);
 
   useEffect(() => {
     const pixelGridEl = pixelGridRef.current;
@@ -61,6 +65,15 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
     const pixels = pixelGridEl.querySelectorAll<HTMLDivElement>('.pixelated-transition__pixel');
     if (!pixels.length) return;
 
+    if (isTriggered && prefersReducedMotion()) {
+      // CSS reduced-motion rules can't reach GSAP — do a plain cut instead
+      activeEl.style.display = 'block';
+      activeEl.style.pointerEvents = 'auto';
+      setFirstDone(true);
+      onComplete?.();
+      return;
+    }
+
     if (isTriggered) {
       gsap.killTweensOf(pixels);
       if (delayedCallRef.current) delayedCallRef.current.kill();
@@ -93,6 +106,7 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
           from: 'random'
         },
         onComplete: () => {
+            setFirstDone(true);
             if (onComplete) onComplete();
         }
       });
@@ -102,9 +116,11 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
   return (
     <div ref={containerRef} className={`relative w-full h-full overflow-hidden ${className}`}>
       {/* Default (Landing) Content */}
-      <div className="absolute inset-0 w-full h-full z-10" aria-hidden={isTriggered}>
-        {firstContent}
-      </div>
+      {!firstDone && (
+        <div className="absolute inset-0 w-full h-full z-10" aria-hidden={isTriggered}>
+          {firstContent}
+        </div>
+      )}
 
       {/* Second Content (Terminal) */}
       <div

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useTerminalStore } from "@/store/useTerminalStore";
 import { detectDevice } from "@/lib/deviceCheck";
 import Terminal from "@/components/terminal/Terminal";
@@ -10,27 +10,27 @@ import { executeCommand } from "@/components/terminal/commands";
 import { getHistoryPrompt } from "@/components/terminal/Prompt";
 import { line } from "@/lib/commandParser";
 
-export default function TerminalWindow() {
+// `revealed` flips when the entry screen hands off. The terminal is mounted
+// (hidden) from page load, so anything that should be *seen* animating keys off it.
+export default function TerminalWindow({ revealed }: { revealed: boolean }) {
   const appendOutput = useTerminalStore((s) => s.appendOutput);
   const clearOutput = useTerminalStore((s) => s.clearOutput);
   const pushHistory = useTerminalStore((s) => s.pushHistory);
   const setLastCommand = useTerminalStore((s) => s.setLastCommand);
   const setDeviceType = useTerminalStore((s) => s.setDeviceType);
 
-  // Track boot state so chips animate in after boot
-  const [booted, setBooted] = useState(false);
   const autoOpenedRender = useRef(false);
 
-  // Auto-open the 3D panel once on desktop's first boot — it's the portfolio's
-  // showcase and was otherwise hidden behind a toggle most visitors never find.
+  // Auto-open the 3D panel once on desktop when the terminal is revealed — it's
+  // the portfolio's showcase and was otherwise hidden behind a toggle.
   useEffect(() => {
-    if (autoOpenedRender.current || !booted) return;
+    if (autoOpenedRender.current || !revealed) return;
     const state = useTerminalStore.getState();
     if (state.deviceType !== "mobile" && !state.renderEnabled) {
       autoOpenedRender.current = true;
       state.toggleRender();
     }
-  }, [booted]);
+  }, [revealed]);
 
   // Detect device on mount
   useEffect(() => {
@@ -40,26 +40,6 @@ export default function TerminalWindow() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [setDeviceType]);
-
-  // Listen for boot completion from Terminal
-  // Terminal sets output after boot, so we watch for it
-  useEffect(() => {
-    const unsub = useTerminalStore.subscribe((state) => {
-      // Once terminal has output (boot is done and welcome pushed), show chips
-      if (!booted && state.output.length === 0) {
-        // Terminal cleared output after boot = boot just finished
-        setBooted(true);
-      }
-    });
-
-    // Also set booted after a max timeout as fallback
-    const fallback = setTimeout(() => setBooted(true), 5000);
-
-    return () => {
-      unsub();
-      clearTimeout(fallback);
-    };
-  }, [booted]);
 
   // Command execution handler for chips
   const handleChipCommand = useCallback(
@@ -129,10 +109,10 @@ export default function TerminalWindow() {
       </div>
 
       {/* ─── Terminal Body ─── */}
-      <Terminal onBootComplete={() => setBooted(true)} />
+      <Terminal />
 
       {/* ─── Command Chips ─── */}
-      <CommandChips onCommand={handleChipCommand} visible={booted} />
+      <CommandChips onCommand={handleChipCommand} visible={revealed} />
     </div>
   );
 }
