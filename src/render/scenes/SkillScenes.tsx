@@ -7,20 +7,12 @@ import { Line } from "@react-three/drei";
 import * as THREE from "three";
 import { useTerminalStore } from "@/store/useTerminalStore";
 import { PORTFOLIO_DATA } from "@/lib/portfolioData";
+import { PALETTE, type Theme } from "@/render/palette";
 
 interface SkillsSceneProps {
   reducedMotion: boolean;
-  theme: "dark" | "light";
+  theme: Theme;
 }
-
-const CATEGORY_COLORS: Record<string, string> = {
-  languages: "#a3e635",
-  ai: "#c084fc",
-  frontend: "#4ade80",
-  backend: "#fb923c",
-  databases: "#38bdf8",
-  tools: "#f43f5e",
-};
 
 // Initials for the core identity badge, e.g. "Dhrumil Amin" → "DA"
 const INITIALS = PORTFOLIO_DATA.PROFILE.name
@@ -31,10 +23,9 @@ const INITIALS = PORTFOLIO_DATA.PROFILE.name
   .toUpperCase();
 
 // ─── Spinning TorusKnot core — the developer at the center of the graph ───
-function CoreNode({ theme }: { theme: string }) {
+function CoreNode({ theme }: { theme: Theme }) {
   const knotRef = useRef<THREE.Mesh>(null);
-  const color = theme === "dark" ? "#a3e635" : "#65a30d";
-  const textColor = theme === "dark" ? "#e2e8f0" : "#1e293b";
+  const { accent: color, text: textColor } = PALETTE[theme];
 
   useFrame((state) => {
     if (!knotRef.current) return;
@@ -80,7 +71,7 @@ function SkillNode({
   skills: string[];
   color: string;
   reducedMotion: boolean;
-  theme: string;
+  theme: Theme;
   index: number;
 }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -108,8 +99,7 @@ function SkillNode({
     }
   });
 
-  const textColor = theme === "dark" ? "#e2e8f0" : "#1e293b";
-  const dimColor = theme === "dark" ? "#94a3b8" : "#475569";
+  const { text: textColor, textDim: dimColor } = PALETTE[theme];
 
   return (
     <group
@@ -196,7 +186,7 @@ export default function SkillsScene({ reducedMotion, theme }: SkillsSceneProps) 
     });
   }, [categories]);
 
-  const lineColor = theme === "dark" ? "#a3e635" : "#94a3b8";
+  const lineColor = theme === "dark" ? PALETTE.dark.accent : PALETTE.light.textDim;
 
   return (
     <group>
@@ -219,7 +209,8 @@ export default function SkillsScene({ reducedMotion, theme }: SkillsSceneProps) 
           position={positions[i]}
           label={cat}
           skills={skills as string[]}
-          color={CATEGORY_COLORS[cat] ?? "#a3e635"}
+          // One accent for every node: six hues for six categories encoded nothing
+          color={PALETTE[theme].accent}
           reducedMotion={reducedMotion}
           theme={theme}
           index={i}

@@ -236,16 +236,6 @@ const PROJECTS = [
 
 const EXPERIENCE_DATA = [
   {
-    company: "IEEE CHARUSAT Student Branch",
-    role: "Webmaster",
-    period: "2025 – Present",
-    highlights: [
-      "Designed, developed, and deployed the official IEEE CHARUSAT SB website using Next.js",
-      "Implemented smooth UI animations and optimized page performance",
-      "Managing end-to-end website maintenance, deployment, and content updates",
-    ],
-  },
-  {
     company: "TechGenius Club, CHARUSAT",
     role: "Tech Lead",
     period: "2025 – Present",
@@ -255,11 +245,21 @@ const EXPERIENCE_DATA = [
     ],
   },
   {
+    company: "IEEE CHARUSAT Student Branch",
+    role: "Webmaster",
+    period: "2025 – 2026",
+    highlights: [
+      "Designed, developed, and deployed the official IEEE CHARUSAT SB website using Next.js",
+      "Implemented smooth UI animations and optimized page performance",
+      "Managed end-to-end website maintenance, deployment, and content updates",
+    ],
+  },
+  {
     company: "AIML Club, CHARUSAT",
     role: "Web Team Member",
-    period: "2025 – Present",
+    period: "2025 – 2026",
     highlights: [
-      "Maintaining and enhancing the club website for reliability and responsiveness",
+      "Maintained and enhanced the club website for reliability and responsiveness",
       "Implemented UI and performance improvements to improve usability and stability",
     ],
   },

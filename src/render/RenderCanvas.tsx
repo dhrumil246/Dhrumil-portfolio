@@ -8,6 +8,7 @@ import { prefersReducedMotion } from "@/lib/deviceCheck";
 import SkillsScene from "@/render/scenes/SkillScenes";
 import ProjectScene from "@/render/scenes/ProjectScenes";
 import Effects from "@/render/components/Effects";
+import { PALETTE } from "@/render/palette";
 
 // ─── FPS Monitor ───
 function FPSMonitor({ onLowFPS }: { onLowFPS: () => void }) {
@@ -47,7 +48,7 @@ function LoadingFallback() {
   return (
     <mesh>
       <boxGeometry args={[0.5, 0.5, 0.5]} />
-      <meshBasicMaterial color="#38bdf8" wireframe />
+      <meshBasicMaterial color={PALETTE.dark.accent} wireframe />
     </mesh>
   );
 }
@@ -60,16 +61,16 @@ export default function RenderCanvas() {
 
   // Determine which scene to show based on last command
   const activeScene =
-    lastCommand === "projects" || lastCommand === "project"
-      ? "projects"
-      : "skills";
+    // lastCommand is the full input ("project vaani"), so match the verb
+    lastCommand?.startsWith("project") ? "projects" : "skills";
 
   const handleLowFPS = useCallback(() => {
     console.warn("[RenderCanvas] Low FPS detected, disabling render");
     useTerminalStore.getState().toggleRender();
   }, []);
 
-  const bgColor = theme === "dark" ? "#0a0e17" : "#f8fafc";
+  const ink = PALETTE[theme];
+  const bgColor = ink.bg;
 
   return (
     <Canvas
@@ -90,7 +91,7 @@ export default function RenderCanvas() {
       <pointLight
         position={[-4, -3, 2]}
         intensity={0.4}
-        color={theme === "dark" ? "#38bdf8" : "#94a3b8"}
+        color={theme === "dark" ? ink.accent : ink.textDim}
       />
 
       {/* Post-Processing Effects */}
@@ -104,7 +105,7 @@ export default function RenderCanvas() {
           size={1.5}
           speed={0.3}
           opacity={0.25}
-          color={theme === "dark" ? "#a3e635" : "#94a3b8"}
+          color={theme === "dark" ? ink.accent : ink.textDim}
         />
       )}
 

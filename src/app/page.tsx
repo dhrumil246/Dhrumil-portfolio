@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 import { useTerminalStore } from "@/store/useTerminalStore";
 import TerminalWindow from "@/components/layout/TerminalWindow";
 import EntryScreen from "@/components/layout/EntryScreen";
-import PixelTransition from "@/components/ui/PixelTransition"; // Added import
+import PixelTransition from "@/components/ui/PixelTransition";
+import RenderBoundary from "@/render/RenderBoundary";
 
 // Lazy-load render canvas — never loads unless user opts in
 const RenderCanvas = dynamic(() => import("@/render/RenderCanvas"), {
@@ -27,6 +28,8 @@ export default function Home() {
   const renderEnabled = useTerminalStore((s) => s.renderEnabled);
   const toggleRender = useTerminalStore((s) => s.toggleRender);
   const lastCommand = useTerminalStore((s) => s.lastCommand);
+  // lastCommand is the full input ("project vaani"), so match the verb
+  const showsProjects = lastCommand?.startsWith("project") ?? false;
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export default function Home() {
       isTriggered={hasBooted}
       firstContent={<EntryScreen onComplete={() => setHasBooted(true)} />}
       gridSize={12}
-      pixelColor="#28c840" 
+      pixelColor="#a3e635" /* --accent */ 
       animationStepDuration={0.4}
       className="w-full h-screen"
       secondContent={
@@ -49,8 +52,8 @@ export default function Home() {
           className="min-h-screen flex flex-col items-center justify-center p-4 theme-transition"
           style={{
             background: "var(--bg)",
-            backgroundImage:
-              "radial-gradient(ellipse at 50% 40%, rgba(56, 189, 248, 0.04) 0%, transparent 70%)",
+            // body sets color in dark :root scope; re-resolve it inside the theme
+            color: "var(--text)",
           }}
         >
           {/* ─── Main Layout ─── */}
@@ -79,33 +82,25 @@ export default function Home() {
                     borderBottom: "1px solid var(--border)",
                   }}
                 >
-                  {/* Traffic lights — red closes the panel */}
-                  <div className="flex gap-[7px] shrink-0">
-                    <button
-                      onClick={() => toggleRender()}
-                      className="w-3 h-3 rounded-full"
-                      style={{ background: "#ff5f57" }}
-                      title="Close render panel"
-                      aria-label="Close render panel"
-                    />
-                    <div className="w-3 h-3 rounded-full" style={{ background: "#febc2e" }} />
-                    <div className="w-3 h-3 rounded-full" style={{ background: "#28c840" }} />
-                  </div>
-
                   {/* Path */}
-                  <span className="flex-1 text-center terminal-text text-xs" style={{ color: "var(--text-dim)" }}>
-                    {lastCommand === "projects" || lastCommand === "project"
-                      ? "render://projects"
-                      : "render://skills-graph"}
+                  <span className="flex-1 terminal-text text-xs" style={{ color: "var(--text-dim)" }}>
+                    {showsProjects ? "render://projects" : "render://skills-graph"}
                   </span>
 
-                  {/* Live indicator */}
-                  <span className="terminal-text text-xs shrink-0" style={{ color: "var(--green)" }}>
-                    ● LIVE
-                  </span>
+                  {/* Close — a labelled control instead of a red macOS dot */}
+                  <button
+                    onClick={() => toggleRender()}
+                    className="terminal-text text-xs shrink-0 render-close"
+                    title="Close render panel"
+                    aria-label="Close render panel"
+                  >
+                    close ×
+                  </button>
                 </div>
                 <div className="flex-1 min-h-[440px] rounded-b-xl overflow-hidden">
-                  <RenderCanvas />
+                  <RenderBoundary>
+                    <RenderCanvas />
+                  </RenderBoundary>
                 </div>
               </div>
             )}

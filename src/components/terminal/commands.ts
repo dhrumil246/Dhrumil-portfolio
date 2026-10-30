@@ -206,9 +206,9 @@ const commands: Record<string, CommandHandler> = {
       line(`  ${p.description}`, "text"),
       EMPTY,
       line(`  Role:    ${p.role}`, "green"),
-      line(`  Tech:    ${p.tech.join(", ")}`, "cyan"),
+      line(`  Tech:    ${p.tech.join(", ")}`, "textDim"),
       line(`  Impact:  ${p.impact}`, "yellow"),
-      line(`  Link:    ${p.link}`, "orange", p.link.startsWith("http") ? p.link : `https://${p.link}`),
+      line(`  Link:    ${p.link}`, "accent", p.link.startsWith("http") ? p.link : `https://${p.link}`),
       line(`  Year:    ${p.year}`, "textDim"),
       EMPTY,
       // Case study: what was built, what failed, what the numbers say
@@ -313,7 +313,15 @@ const commands: Record<string, CommandHandler> = {
       ];
     }
     store.toggleRender();
-    const next = !store.renderEnabled;
+    const next = useTerminalStore.getState().renderEnabled;
+    if (!next && !store.renderEnabled) {
+      // toggleRender refused to open: no WebGL in this browser
+      return [
+        EMPTY,
+        line("  3D needs WebGL, which this browser has turned off.", "yellow"),
+        EMPTY,
+      ];
+    }
     return [
       EMPTY,
       line(`  Render mode ${next ? "enabled" : "disabled"}`, "green"),
@@ -337,23 +345,43 @@ const commands: Record<string, CommandHandler> = {
     ];
   },
 
-  neofetch: () => [
-  EMPTY,
-  line("         ▄▄▄▄▄▄▄          dhrumil@portfolio", "accent"),  // ← change alex to dhrumil
-  line("        ██     ██          ──────────────", "accent"),
-  line("       ██  ▄▄  ██         OS: Next.js 16", "text"),       // ← 16 → 14
-  line("      ██  ████  ██        Shell: zsh", "text"),
-  line("       ██  ▀▀  ██         State: Zustand v5", "text"),
-  line("        ██     ██          Style: Tailwind v4", "text"),
-  line("         ▀▀▀▀▀▀▀          Uptime: 1+ years", "text"),     // ← 4+ → 1+
-  EMPTY,
-],
+  neofetch: () => {
+    // ASCII only: JetBrains Mono is loaded with the latin subset, so block
+    // glyphs (▄ █ ▀) fell back to another font with other widths and broke the
+    // column. Art and info share one column computed from the widest art row.
+    const art = [
+      " ____    _",
+      "|  _ \\  / \\",
+      "| | | |/ _ \\",
+      "| |_| / ___ \\",
+      "|____/_/   \\_\\",
+      "",
+      "",
+    ];
+    const info = [
+      "dhrumil@portfolio",
+      "-----------------",
+      "Framework: Next.js 16",
+      "UI: React 19",
+      "3D: React Three Fiber 9",
+      "State: Zustand 5",
+      "Style: Tailwind CSS 4",
+    ];
+    const width = Math.max(...art.map((a) => a.length)) + 4;
+    return [
+      EMPTY,
+      ...art.map((a, i) =>
+        line(`  ${a.padEnd(width)}${info[i] ?? ""}`, i < 2 ? "accent" : "text")
+      ),
+      EMPTY,
+    ];
+  },
 
   sudo: (args) => {
     if (args.join(" ") === "unlock") {
       return [
         EMPTY,
-        line("  Easter egg unlocked!", "pink"),
+        line("  Easter egg unlocked!", "accent"),
         line("  You found the secret. Here's a cookie: 🍪", "yellow"),
         EMPTY,
       ];

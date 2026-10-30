@@ -6,13 +6,12 @@ import { Text, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
 import { type Project } from "@/components/terminal/commands";
 import { useTerminalStore } from "@/store/useTerminalStore";
+import { PALETTE, type Theme } from "@/render/palette";
 
 interface ProjectSceneProps {
   reducedMotion: boolean;
-  theme: "dark" | "light";
+  theme: Theme;
 }
-
-const PROJECT_COLORS = ["#a3e635", "#fb923c", "#f43f5e", "#eab308"];
 
 // ─── Single 3D project card ───
 function ProjectCard({
@@ -29,7 +28,7 @@ function ProjectCard({
   isActive: boolean;
   targetPosition: [number, number, number];
   reducedMotion: boolean;
-  theme: string;
+  theme: Theme;
   index: number;
 }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -56,9 +55,8 @@ function ProjectCard({
     }
   });
 
-  const dimColor = theme === "dark" ? "#94a3b8" : "#475569";
-  const surfaceColor = theme === "dark" ? "#0d1117" : "#ffffff";
-  const borderColor = theme === "dark" ? "#1e293b" : "#e2e8f0";
+  const { textDim: dimColor, surface: surfaceColor, border: borderColor } =
+    PALETTE[theme];
 
   const W = 2.3;
   const H = 1.35;
@@ -193,15 +191,24 @@ export default function ProjectScene({ reducedMotion, theme }: ProjectSceneProps
   const [activeIndex, setActiveIndex] = useState(0);
   const pausedRef = useRef(false);
 
-  // Auto-advance every 3.5s — pauses while the user is hovering the panel
+  // `project <name>` focuses that card and holds it; `projects` browses
+  const lastCommand = useTerminalStore((s) => s.lastCommand);
+  const focusedIndex = pData.findIndex(
+    (p: Project) => lastCommand?.trim().toLowerCase() === `project ${p.name}`
+  );
   useEffect(() => {
-    if (reducedMotion || pData.length <= 1) return;
+    if (focusedIndex >= 0) setActiveIndex(focusedIndex);
+  }, [focusedIndex]);
+
+  // Auto-advance every 3.5s — pauses while hovering, or while one is focused
+  useEffect(() => {
+    if (reducedMotion || pData.length <= 1 || focusedIndex >= 0) return;
     const id = setInterval(() => {
       if (pausedRef.current) return;
       setActiveIndex((i) => (i + 1) % pData.length);
     }, 3500);
     return () => clearInterval(id);
-  }, [pData.length, reducedMotion]);
+  }, [pData.length, reducedMotion, focusedIndex]);
 
   // Stacked depth layout: active card center-front, others recede behind
   const getTarget = useMemo(() => {
@@ -221,7 +228,7 @@ export default function ProjectScene({ reducedMotion, theme }: ProjectSceneProps
     };
   }, [activeIndex, pData.length]);
 
-  const accentColor = theme === "dark" ? "#a3e635" : "#65a30d";
+  const accentColor = PALETTE[theme].accent;
 
   return (
     <group
@@ -246,7 +253,7 @@ export default function ProjectScene({ reducedMotion, theme }: ProjectSceneProps
         <ProjectCard
           key={project.name ?? project.title}
           project={project}
-          color={PROJECT_COLORS[i % PROJECT_COLORS.length]}
+          color={accentColor}
           isActive={i === activeIndex}
           targetPosition={getTarget(i)}
           reducedMotion={reducedMotion}
@@ -266,13 +273,7 @@ export default function ProjectScene({ reducedMotion, theme }: ProjectSceneProps
         >
           <circleGeometry args={[i === activeIndex ? 0.055 : 0.032, 16]} />
           <meshBasicMaterial
-            color={
-              i === activeIndex
-                ? PROJECT_COLORS[i % PROJECT_COLORS.length]
-                : theme === "dark"
-                ? "#334155"
-                : "#cbd5e1"
-            }
+            color={i === activeIndex ? accentColor : PALETTE[theme].border}
           />
         </mesh>
       ))}

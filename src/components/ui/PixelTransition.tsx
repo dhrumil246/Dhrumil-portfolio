@@ -17,7 +17,7 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
   firstContent,
   secondContent,
   gridSize = 7,
-  pixelColor = '#28c840', // acid green hacker color
+  pixelColor = '#a3e635', // --accent
   animationStepDuration = 0.4,
   isTriggered,
   className = '',
@@ -43,8 +43,6 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
         pixel.classList.add('pixelated-transition__pixel');
         pixel.classList.add('absolute', 'hidden');
         pixel.style.backgroundColor = pixelColor;
-        // Optional border for grid effect
-        // pixel.style.border = '1px solid rgba(0,0,0,0.1)';
 
         const size = 100 / gridSize;
         pixel.style.width = `${size}%`;

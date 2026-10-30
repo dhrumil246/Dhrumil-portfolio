@@ -78,28 +78,12 @@ export default function TerminalWindow({ revealed }: { revealed: boolean }) {
           borderBottom: "1px solid var(--border)",
         }}
       >
-        {/* Traffic lights */}
-        <div className="flex gap-[7px]">
-          <div
-            className="w-3 h-3 rounded-full"
-            style={{ background: "#ff5f57" }}
-          />
-          <div
-            className="w-3 h-3 rounded-full"
-            style={{ background: "#febc2e" }}
-          />
-          <div
-            className="w-3 h-3 rounded-full"
-            style={{ background: "#28c840" }}
-          />
-        </div>
-
-        {/* Title */}
+        {/* Title — a plain tab label, no fake macOS window controls */}
         <div
-          className="flex-1 text-center terminal-text text-xs"
+          className="flex-1 terminal-text text-xs"
           style={{ color: "var(--text-dim)" }}
         >
-          dhrumilamin@portfolio ~ zsh
+          dhrumil@portfolio <span style={{ color: "var(--accent)" }}>~</span>
         </div>
 
         {/* Toggles */}

@@ -87,7 +87,7 @@ export default function EntryScreen({ onComplete }: { onComplete: () => void }) 
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-6 cursor-pointer select-none overflow-hidden"
       style={{
-        background: "#050505",
+        background: "var(--bg)",
         fontFamily: "var(--font-mono), monospace",
       }}
     >
@@ -96,7 +96,7 @@ export default function EntryScreen({ onComplete }: { onComplete: () => void }) 
         <h1 
           className="text-[18vw] md:text-[14vw] font-black tracking-tighter leading-[0.85] whitespace-nowrap text-center"
           style={{ 
-             color: "#1a1a24", // Solid deep dark gray body
+             color: "var(--surface-elevated)", // ink body; the stroke defines the letters
              WebkitTextStroke: "2px rgba(255, 255, 255, 0.15)", // Glowing white stroke to define the edges
              textShadow: "0 0 20px rgba(255, 255, 255, 0.05)" // Slight ambient glow
           }}
@@ -110,7 +110,7 @@ export default function EntryScreen({ onComplete }: { onComplete: () => void }) 
         <ShapeGrid 
           direction="diagonal"
           borderColor="rgba(255, 255, 255, 0.2)" // 20% white so the grid is incredibly pronounced
-          hoverFillColor="#28c840" 
+          hoverFillColor="#a3e635" /* --accent */
           squareSize={40}
           shape="square" 
           speed={0.5}
@@ -131,18 +131,13 @@ export default function EntryScreen({ onComplete }: { onComplete: () => void }) 
         className="relative z-20 w-full max-w-3xl border flex flex-col rounded-xl overflow-hidden"
         style={{ 
           borderColor: "var(--border)", 
-          background: "rgba(10, 14, 23, 0.8)",
+          background: "rgba(15, 18, 16, 0.85)", // --surface at 85%
           backdropFilter: "blur(12px)",
           boxShadow: "0 0 40px rgba(0,0,0,0.6)"
         }}
       >
         {/* Terminal Header */}
         <div className="relative flex items-center px-4 py-3 border-b" style={{ borderColor: "var(--border)", background: "var(--header-bg)" }}>
-          <div className="flex gap-2 relative z-10">
-            <div className="w-3 h-3 rounded-full" style={{ background: "#ff5f57" }} />
-            <div className="w-3 h-3 rounded-full" style={{ background: "#febc2e" }} />
-            <div className="w-3 h-3 rounded-full" style={{ background: "#28c840" }} />
-          </div>
           <div className="absolute inset-0 flex items-center justify-center text-[10px] md:text-xs opacity-40 uppercase tracking-widest pointer-events-none">
             boot_sequence_v2.0
           </div>

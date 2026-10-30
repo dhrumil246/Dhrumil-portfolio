@@ -1,6 +1,6 @@
 // Zustand v5 — create<State>()(...) double-call pattern for TypeScript
 import { create } from "zustand";
-import { detectDevice, type DeviceType } from "@/lib/deviceCheck";
+import { detectDevice, supportsWebGL, type DeviceType } from "@/lib/deviceCheck";
 import { PORTFOLIO_DATA, type PortfolioData } from "@/lib/portfolioData";
 
 export interface TerminalLine {
@@ -11,10 +11,7 @@ export interface TerminalLine {
     | "accent"
     | "green"
     | "yellow"
-    | "red"
-    | "pink"
-    | "cyan"
-    | "orange";
+    | "red";
   href?: string;
   /** Tapping the line runs this command — how touch users reach `project <name>` */
   cmd?: string;
@@ -62,8 +59,11 @@ export const useTerminalStore = create<TerminalState>()((set, get) => ({
   // ─── Render ───
   renderEnabled: false,
   toggleRender: () => {
-    const { deviceType } = get();
+    const { deviceType, renderEnabled } = get();
     if (deviceType === "mobile") return;
+    // One gate for every way in (auto-open, chip, `render` command): without a
+    // WebGL context the canvas fails, so never open it. Closing always works.
+    if (!renderEnabled && !supportsWebGL()) return;
     set((s) => ({ renderEnabled: !s.renderEnabled }));
   },
 
