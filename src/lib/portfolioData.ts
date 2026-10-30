@@ -178,14 +178,15 @@ const PROJECTS = [
     year: "2026",
   },
   {
-    name: "blueverse",
-    title: "BlueVerse",
+    name: "quizzx",
+    title: "QuizzX",
     description:
-      "Competitive quiz platform with JWT auth, team support, live leaderboards, Redis caching, and an admin panel for quiz management.",
-    tech: ["React", "Node.js", "Express", "PostgreSQL", "Redis", "JWT"],
-    role: "Lead Developer",
-    impact: "Real-time individual and team leaderboards with rate limiting and security headers",
-    link: "github.com/dhrumil246/BlueVerse",
+      "Kahoot-style quiz platform for classrooms: six question types with partial credit, AI quiz generation from a topic, notes or an uploaded document, and live presenter-driven rooms with real-time leaderboards. Rebuilt from React + Express to Next.js in 2026.",
+    tech: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "Clerk", "Groq"],
+    // v1 (React + Express): ~79% of commits; v2 (Next.js rebuild): ~17%
+    role: "Lead Developer (v1) · Co-developer (v2 rebuild)",
+    impact: "Led the original build; in the rebuild I added ordering and true/false questions and an LMS gradebook export",
+    link: "github.com/dhrumil246/QuizzX",
     year: "2026",
   },
   {

@@ -8,6 +8,7 @@ export const PALETTE = {
     text: "#e4e9e5", // --text
     textDim: "#8b958e", // --text-dim
     accent: "#a3e635", // --accent
+    die: "#353d37", // passing die (unlit, exact): visible, and under the dark-mode bloom threshold
   },
   light: {
     bg: "#f5f6f4",
@@ -16,6 +17,7 @@ export const PALETTE = {
     text: "#171b18",
     textDim: "#58615a",
     accent: "#3f6212",
+    die: "#c4ccc1",
   },
 } as const;
 

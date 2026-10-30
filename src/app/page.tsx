@@ -7,6 +7,7 @@ import TerminalWindow from "@/components/layout/TerminalWindow";
 import EntryScreen from "@/components/layout/EntryScreen";
 import PixelTransition from "@/components/ui/PixelTransition";
 import RenderBoundary from "@/render/RenderBoundary";
+import { sceneFor, SCENE_PATH } from "@/render/sceneFor";
 
 // Lazy-load render canvas — never loads unless user opts in
 const RenderCanvas = dynamic(() => import("@/render/RenderCanvas"), {
@@ -28,8 +29,7 @@ export default function Home() {
   const renderEnabled = useTerminalStore((s) => s.renderEnabled);
   const toggleRender = useTerminalStore((s) => s.toggleRender);
   const lastCommand = useTerminalStore((s) => s.lastCommand);
-  // lastCommand is the full input ("project vaani"), so match the verb
-  const showsProjects = lastCommand?.startsWith("project") ?? false;
+  const scenePath = SCENE_PATH[sceneFor(lastCommand)];
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export default function Home() {
                 >
                   {/* Path */}
                   <span className="flex-1 terminal-text text-xs" style={{ color: "var(--text-dim)" }}>
-                    {showsProjects ? "render://projects" : "render://skills-graph"}
+                    {scenePath}
                   </span>
 
                   {/* Close — a labelled control instead of a red macOS dot */}

@@ -5,10 +5,11 @@ import { Canvas } from "@react-three/fiber";
 import { Sparkles } from "@react-three/drei";
 import { useTerminalStore } from "@/store/useTerminalStore";
 import { prefersReducedMotion } from "@/lib/deviceCheck";
-import SkillsScene from "@/render/scenes/SkillScenes";
+import WaferScene from "@/render/scenes/WaferScene";
 import ProjectScene from "@/render/scenes/ProjectScenes";
 import Effects from "@/render/components/Effects";
 import { PALETTE } from "@/render/palette";
+import { sceneFor } from "@/render/sceneFor";
 
 // ─── FPS Monitor ───
 function FPSMonitor({ onLowFPS }: { onLowFPS: () => void }) {
@@ -59,10 +60,7 @@ export default function RenderCanvas() {
   const theme = useTerminalStore((s) => s.theme);
   const [reducedMotion] = useState(() => prefersReducedMotion());
 
-  // Determine which scene to show based on last command
-  const activeScene =
-    // lastCommand is the full input ("project vaani"), so match the verb
-    lastCommand?.startsWith("project") ? "projects" : "skills";
+  const activeScene = sceneFor(lastCommand);
 
   const handleLowFPS = useCallback(() => {
     console.warn("[RenderCanvas] Low FPS detected, disabling render");
@@ -114,8 +112,8 @@ export default function RenderCanvas() {
 
       {/* Scene Switcher */}
       <Suspense fallback={<LoadingFallback />}>
-        {activeScene === "skills" ? (
-          <SkillsScene reducedMotion={reducedMotion} theme={theme} />
+        {activeScene === "wafer" ? (
+          <WaferScene reducedMotion={reducedMotion} theme={theme} />
         ) : (
           <ProjectScene reducedMotion={reducedMotion} theme={theme} />
         )}
