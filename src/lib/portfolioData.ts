@@ -2,7 +2,7 @@
 
 const PROFILE = {
   name: "Dhrumil Amin",
-  title: "Developer. Builder. AI Enthusiast.",
+  title: "AI Engineer. Full-Stack Builder.",
   tagline: "Building AI-powered products that solve real problems — one commit at a time.",
   location: "Bharuch, Gujarat, India",
   experience: "1+ years",
@@ -13,14 +13,37 @@ const PROFILE = {
 };
 
 const SKILLS: Record<string, string[]> = {
-  languages: ["JavaScript", "Python", "C++", "Java", "SQL"],
+  languages: ["Python", "TypeScript", "JavaScript", "C++", "Java", "SQL"],
+  ai: ["PyTorch", "scikit-learn", "CNNs", "Conformal Prediction", "LLM Agents", "MCP", "Voice AI"],
   frontend: ["React", "Next.js", "GSAP", "Tailwind CSS"],
-  backend: ["Node.js", "Express.js", "REST APIs"],
-  databases: ["MySQL", "PostgreSQL", "MongoDB"],
-  tools: ["Git", "GitHub", "Docker", "OOP", "DSA"],
+  backend: ["FastAPI", "Node.js", "Express.js", "REST APIs", "WebSockets"],
+  databases: ["PostgreSQL", "Supabase", "MySQL", "MongoDB"],
+  tools: ["Git", "GitHub", "Docker", "Twilio", "OOP", "DSA"],
 };
 
 const PROJECTS = [
+  {
+    name: "yieldguard",
+    title: "YieldGuard",
+    description:
+      "Agentic AI root-cause analyser for semiconductor wafer yield failures — classifies defect patterns, scores sensor anomalies, and ranks root causes with cited evidence. Runners-up at IBM Bob AI Hackathon 2026.",
+    tech: ["PyTorch", "MCP", "IBM Bob", "FastAPI", "Next.js", "Gemini", "scikit-learn"],
+    role: "Lead Developer / ML Engineer",
+    impact: "Custom CNN at 0.923 macro-F1; conformal prediction lifted excursion detection 34.7% → 93.9%",
+    link: "github.com/Parva-28/bob-ai-hackathon-DuckDuckGo",
+    year: "2026",
+  },
+  {
+    name: "vaani",
+    title: "Vaani",
+    description:
+      "AI sales agent platform that discovers and enriches leads, then places outbound calls where an AI voice agent holds a live conversation in Hindi and other Indian languages, transcribing every turn.",
+    tech: ["Next.js", "FastAPI", "Supabase", "Sarvam AI", "Twilio", "WebSockets"],
+    role: "Lead Developer",
+    impact: "Real-time Indian-language AI voice calls over live phone lines, with streaming transcripts and barge-in",
+    link: "github.com/dhrumil246/Vaani-AI",
+    year: "2026",
+  },
   {
     name: "ai-resume-analyzer",
     title: "AI Resume Analyzer",
@@ -143,6 +166,7 @@ const EXPERIENCE_DATA = [
 ];
 
 const ACHIEVEMENTS = [
+  "Runners-up (2nd place) at IBM Bob AI Hackathon 2026 — YieldGuard",
   "NPTEL Elite Certification in Programming in Modern C++",
   "Solved 200+ problems on LeetCode",
   "Finalist at National Level ODOO Hackathon 2025",

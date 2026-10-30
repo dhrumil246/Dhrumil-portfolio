@@ -15,6 +15,7 @@ interface SkillsSceneProps {
 
 const CATEGORY_COLORS: Record<string, string> = {
   languages: "#a3e635",
+  ai: "#c084fc",
   frontend: "#4ade80",
   backend: "#fb923c",
   databases: "#38bdf8",

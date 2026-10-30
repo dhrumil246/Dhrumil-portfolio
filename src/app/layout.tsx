@@ -14,11 +14,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dhrumil Amin — Full-Stack Engineer",
+  title: "Dhrumil Amin — AI & Full-Stack Engineer",
   description:
-    "Interactive terminal portfolio showcasing full-stack engineering skills, projects, and experience.",
+    "Interactive terminal portfolio showcasing AI and full-stack engineering: agentic ML systems, real-time voice AI, and web products.",
   keywords: [
     "software engineer",
+    "ai engineer",
+    "machine learning",
     "full-stack developer",
     "portfolio",
     "terminal",
@@ -28,14 +30,14 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Dhrumil Amin" }],
   openGraph: {
-    title: "Dhrumil Amin — Full-Stack Engineer",
+    title: "Dhrumil Amin — AI & Full-Stack Engineer",
     description: "Interactive terminal portfolio",
     type: "website",
     url: "https://github.com/dhrumil246",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dhrumil Amin — Full-Stack Engineer",
+    title: "Dhrumil Amin — AI & Full-Stack Engineer",
     description: "Interactive terminal portfolio",
   },
 };

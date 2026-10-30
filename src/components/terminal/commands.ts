@@ -73,9 +73,15 @@ const commands: Record<string, CommandHandler> = {
       line(`  Location:    ${p.location}`, "textDim"),
       line(`  Experience:  ${p.experience}`, "textDim"),
       EMPTY,
-      line("  I build tools that engineers actually want to", "text"),
-      line("  use. Passionate about developer experience,", "text"),
-      line("  performance optimization, and clean abstractions.", "text"),
+      line("  I build AI systems end to end — from training", "text"),
+      line("  models to shipping the product around them.", "text"),
+      line("  Recently: a wafer-defect CNN and 14-tool MCP agent", "text"),
+      line("  (YieldGuard, IBM Bob Hackathon runners-up), and a", "text"),
+      line("  real-time Hindi voice sales agent (Vaani).", "text"),
+      EMPTY,
+      line("  I care about AI that is honest about what it knows:", "text"),
+      line("  cited evidence, calibrated uncertainty, and models", "text"),
+      line("  that abstain instead of guessing.", "text"),
       EMPTY,
     ];
   },
@@ -91,9 +97,10 @@ const commands: Record<string, CommandHandler> = {
     ];
     const icons: Record<string, string> = {
       languages: "Languages",
+      ai: "AI / ML",
       frontend: "Frontend",
       backend: "Backend",
-      devops: "DevOps",
+      databases: "Databases",
       tools: "Tools",
     };
     Object.entries(s).forEach(([cat, items]) => {
